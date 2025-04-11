@@ -1,0 +1,16 @@
+name: build
+on: push
+jobs:
+  build:
+    run-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: action/checkout@v3
+      - name: LintTestBuild
+        run: |
+          npm install
+          npm lint
+          npm test
+          npm build
+
+  
