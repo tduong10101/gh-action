@@ -9,8 +9,8 @@ jobs:
       - name: LintTestBuild
         run: |
           npm install
-          npm lint
-          npm test
-          npm build
+          npm run lint
+          npm run test
+          npm run build
 
   
