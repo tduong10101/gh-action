@@ -4,8 +4,6 @@ on:
     types:
       - opened
       - edited
-    paths:
-      - '*'
   workflow_dispatch:
 jobs:
   build:
