@@ -1,16 +1,20 @@
 name: build
-on: push
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Output event data
+        uses: echo "${{ toJSON(github.event) }}"
       - name: Checkout
         uses: actions/checkout@v3
-      - name: LintTestBuild
-        run: |
-          npm install
-          npm run lint
-          npm run test
-          npm run build
+      - name: Install dependenies
+        run: npm ci
+      - name: Test code
+        run: npm test
+      - name: Build code
+        run: npm build
+      - name: Deploy project
+        run: echo "Deploying..."
 
   
