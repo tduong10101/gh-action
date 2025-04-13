@@ -3,13 +3,16 @@ on:
   pull_request:
     types:
       - opened
+      - edited
+    paths:
+      - '*'
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Output event data
-        uses: echo "${{ toJSON(github.event) }}"
+        run: echo "${{ toJSON(github.event) }}"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install dependenies
@@ -17,7 +20,7 @@ jobs:
       - name: Test code
         run: npm test
       - name: Build code
-        run: npm build
+        run: npm run build
       - name: Deploy project
         run: echo "Deploying..."
 
