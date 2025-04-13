@@ -1,27 +1,41 @@
 name: build
 on: 
-  pull_request:
-    types:
-      - opened
-      - edited
-    paths:
-      - '*'
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    run-on: ubuntu-latest
     steps:
-      - name: Output event data
-        run: echo "${{ toJSON(github.event) }}"
-      - name: Checkout
+      - name: Get code
         uses: actions/checkout@v3
       - name: Install dependenies
         run: npm ci
+      - name: Lint code
+        run: npm run lint
       - name: Test code
         run: npm test
-      - name: Build code
-        run: npm run build
-      - name: Deploy project
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install dependenies
+        run: npm ci
+      - name: Build website
+        run: npm npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-file
+          path: |
+            dist
+            package.json
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
         run: echo "Deploying..."
-
   
